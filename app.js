@@ -130,6 +130,13 @@ function formatDate(d){
   return d.toISOString().slice(0,10);
 }
 
+function formatTooltipDate(dateStr){
+  const date = new Date(dateStr);
+  if(isNaN(date)) return dateStr || '';
+  const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  return `${monthNames[date.getUTCMonth()]} ${date.getUTCDate()}, ${date.getUTCFullYear()}`;
+}
+
 async function fetchObservations(taxonName){
   statusEl.textContent = 'Loading...';
   markersLayer.clearLayers();
@@ -164,6 +171,7 @@ async function fetchObservations(taxonName){
       const lat = coords[1], lng = coords[0];
       bounds.push([lat,lng]);
 
+      const tooltipDate = formatTooltipDate(obs.observed_on_string || obs.observed_on || '');
       const popupParts = [];
       popupParts.push(`<strong>${obs.taxon ? obs.taxon.preferred_common_name || obs.taxon.name : obs.species_guess}</strong>`);
       popupParts.push(`<div>${obs.observed_on_string || obs.time_observed_at || ''}</div>`);
@@ -175,6 +183,7 @@ async function fetchObservations(taxonName){
 
       const marker = L.circleMarker([lat,lng], {radius:6, fillColor:'#ffcc00', color:'#ff8c00', weight:1, fillOpacity:0.95});
       marker.bindPopup(popupParts.join(''));
+      marker.bindTooltip(tooltipDate, {direction:'top', offset:[0,-6]});
       marker.addTo(markersLayer);
     });
 
@@ -259,12 +268,12 @@ async function fetchPhenologyData(taxonName, yearsBack=10){
       if(results.length < perPage) break;
       page++;
     }
-    statusPhen.textContent = `Fetched ${totalFetched} observations. Points colored by week-of-year.`;
-    // update day labels from current slider values
+    statusPhen.textContent = `Fetched ${totalFetched} observations. Points colored across the selected range.`;
+    // update the chosen range text from current slider values
     const sVal = parseInt(dayStart.value,10);
     const eVal = parseInt(dayEnd.value,10);
     if(chosenRange) chosenRange.textContent = `Chosen range: ${dayToMonthDay(sVal)} to ${dayToMonthDay(eVal)}`;
-    // render all points colored by week within current day range
+    // render all points colored by position within the selected day range
     renderPhenologyAll(sVal, eVal);
   }catch(err){
     console.error(err);
@@ -273,10 +282,21 @@ async function fetchPhenologyData(taxonName, yearsBack=10){
   }
 }
 
-function weekToColor(week){
-  // map week 1..53 to hue 0..300
-  const h = Math.round(((week-1)/52) * 300);
-  return `hsl(${h},90%,55%)`;
+function lerp(a,b,t){ return a + (b-a) * t; }
+function colorForDayInRange(day, startDay, endDay){
+  const totalRange = ((endDay - startDay + 366) % 366) + 1;
+  let offset;
+  if(startDay <= endDay){
+    offset = day - startDay;
+  }else{
+    offset = day >= startDay ? day - startDay : day + 366 - startDay;
+  }
+  if(offset < 0 || offset >= totalRange) offset = 0;
+  const ratio = totalRange > 1 ? offset / (totalRange - 1) : 0;
+  const r = Math.round(lerp(50, 220, ratio));
+  const g = Math.round(lerp(120, 60, ratio));
+  const b = Math.round(lerp(235, 75, ratio));
+  return `rgb(${r},${g},${b})`;
 }
 
 function dayToMonthDay(day){
@@ -301,9 +321,11 @@ function renderPhenologyAll(startDay=1,endDay=366){
     const list = phenologyByDay[d] || [];
     phenMarkersByDay[d] = [];
     list.forEach(item=>{
-      const col = weekToColor(item.week);
+      const col = colorForDayInRange(d, startDay, endDay);
+      const tooltipDate = formatTooltipDate(item.obs.observed_on_string || item.obs.observed_on || '');
       const m = L.circleMarker([item.lat,item.lng], {radius:4, fillColor:col, color:col, weight:0.6, fillOpacity:0.35});
       m.bindPopup(`<strong>${dayToMonthDay(item.day)}</strong><div>${item.obs.observed_on_string||item.obs.observed_on||''}</div><a href="${item.obs.uri}" target="_blank">iNaturalist</a>`);
+      m.bindTooltip(tooltipDate, {direction:'top', offset:[0,-6]});
       m.addTo(phenMarkersLayer);
       phenMarkersByDay[d].push(m);
       bounds.push([item.lat,item.lng]);

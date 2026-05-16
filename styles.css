@@ -25,10 +25,6 @@ button:hover{filter:brightness(1.05)}
 .leaflet-popup-content a{color:#9fe0ff}
 
 /* phenology legend */
-.phen-legend{flex-basis:100%;margin-top:8px;height:14px;border-radius:6px;overflow:hidden;border:1px solid rgba(200,220,240,0.08)}
-.phen-legend:before{content:''}
-.phen-legend{background:linear-gradient(to right, #ff0000, #ff8000, #ffee00, #7ef0a6, #00c2ff, #8a6bff)}
-
 .phen-months{flex-basis:100%;display:flex;justify-content:space-between;margin-top:6px;font-size:12px;color:#cfe8ff}
 .phen-months span{opacity:0.9}
 
@@ -38,7 +34,9 @@ button:hover{filter:brightness(1.05)}
 .phen-range-controls .dual-range{position:relative;width:520px;display:flex;flex-direction:column;gap:8px}
 .phen-range-controls input[type="range"]{width:100%;position:relative;background:transparent}
 .phen-range-controls .dual-range input[type="range"]::-webkit-slider-thumb{width:16px;height:16px;border-radius:50%;-webkit-appearance:none;appearance:none;cursor:pointer}
-.phen-range-controls .dual-range input#dayStart::-webkit-slider-thumb{background:#66d1ff}
-.phen-range-controls .dual-range input#dayEnd::-webkit-slider-thumb{background:#7ef0a6}
+.phen-range-controls .dual-range input#dayStart::-webkit-slider-thumb{background:#3279ff}
+.phen-range-controls .dual-range input#dayEnd::-webkit-slider-thumb{background:#dc2f2f}
+.phen-range-controls input#dayStart{accent-color:#3279ff}
+.phen-range-controls input#dayEnd{accent-color:#dc2f2f}
 .phen-range-controls span{min-width:74px;text-align:center;color:#cfe8ff}
 .phen-range-controls .dual-range input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%}
