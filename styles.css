@@ -1,0 +1,44 @@
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial; margin:0;}
+.container{max-width:1100px;margin:16px auto;padding:8px}
+.controls{display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
+/* make the species input expand to take available space */
+#speciesInput{flex:1;min-width:260px;padding:8px;background:#0f2430;color:#e6eef6;border:1px solid #22333f;border-radius:4px}
+/* make species input full-width above tabs */
+#speciesInput{display:block;width:100%;box-sizing:border-box;padding:8px;margin:8px 0 6px;background:#0f2430;color:#e6eef6;border:1px solid #22333f;border-radius:4px}
+
+/* group the date inputs on a separate full-width row */
+.date-controls{flex-basis:100%;display:flex;gap:8px;align-items:center;margin-top:6px}
+.date-controls input[type="date"]{padding:6px}
+select{padding:6px}
+button{padding:6px 10px}
+#status{margin-left:8px;color:#333}
+footer{margin-top:8px;font-size:13px;color:#666}
+/* Dark theme */
+body{background:#07121a;color:#e6eef6}
+.container{padding:12px}
+button{padding:8px 12px;background:#1f9fff;color:#07222b;border:none;border-radius:6px;cursor:pointer}
+button:hover{filter:brightness(1.05)}
+#status{color:#cfe8ff}
+.leaflet-container{background:#07121a}
+.leaflet-control{background:rgba(10,20,28,0.8)}
+.leaflet-popup-content-wrapper{background:#071a22;color:#e6eef6}
+.leaflet-popup-content a{color:#9fe0ff}
+
+/* phenology legend */
+.phen-legend{flex-basis:100%;margin-top:8px;height:14px;border-radius:6px;overflow:hidden;border:1px solid rgba(200,220,240,0.08)}
+.phen-legend:before{content:''}
+.phen-legend{background:linear-gradient(to right, #ff0000, #ff8000, #ffee00, #7ef0a6, #00c2ff, #8a6bff)}
+
+.phen-months{flex-basis:100%;display:flex;justify-content:space-between;margin-top:6px;font-size:12px;color:#cfe8ff}
+.phen-months span{opacity:0.9}
+
+/* week range sliders */
+.phen-range-controls{flex-basis:100%;display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap}
+.phen-range-controls label{color:#cfe8ff;font-size:13px}
+.phen-range-controls .dual-range{position:relative;width:520px;display:flex;flex-direction:column;gap:8px}
+.phen-range-controls input[type="range"]{width:100%;position:relative;background:transparent}
+.phen-range-controls .dual-range input[type="range"]::-webkit-slider-thumb{width:16px;height:16px;border-radius:50%;-webkit-appearance:none;appearance:none;cursor:pointer}
+.phen-range-controls .dual-range input#dayStart::-webkit-slider-thumb{background:#66d1ff}
+.phen-range-controls .dual-range input#dayEnd::-webkit-slider-thumb{background:#7ef0a6}
+.phen-range-controls span{min-width:74px;text-align:center;color:#cfe8ff}
+.phen-range-controls .dual-range input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%}

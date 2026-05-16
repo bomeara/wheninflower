@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>When in Flower</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>When in Flower</h1>
+
+    <label for="speciesInput">Species:</label>
+    <input id="speciesInput" list="speciesList" placeholder="Type a species name (common or scientific)" autocomplete="off" />
+    <datalist id="speciesList"></datalist>
+
+    <div class="tabs">
+      <button class="tabbtn active" data-tab="recent">Recent</button>
+      <button class="tabbtn" data-tab="phen">Historical</button>
+    </div>
+
+    <div id="tab-recent" class="controls tab-active">
+
+      <span id="status"></span>
+
+      <div class="date-controls">
+        <label for="d1">From:</label>
+        <input type="date" id="d1" />
+        <label for="d2">To:</label>
+        <input type="date" id="d2" />
+        <button id="searchBtn">Show on Map</button>
+      </div>
+    </div>
+
+    <div id="tab-phen" class="controls" style="display:none">
+
+      <span id="statusPhen"></span>
+
+      <div class="date-controls">
+        <label for="phenYears">Years:</label>
+        <select id="phenYears"><option value="10">Last 10 years</option><option value="5">Last 5 years</option></select>
+        <button id="buildPhenBtn">Build Phenology</button>
+      </div>
+      <div id="phenLegend" class="phen-legend"></div>
+      <div class="phen-months" aria-hidden="true">
+        <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
+      </div>
+
+      <div class="phen-range-controls">
+        <label for="dayStart">Range:</label>
+        <div class="dual-range">
+          <input type="range" id="dayStart" min="1" max="366" value="1" />
+          <input type="range" id="dayEnd" min="1" max="366" value="366" />
+        </div>
+        <span id="chosenRange">Chosen range: Jan 1 to Dec 31</span>
+      </div>
+    </div>
+
+    <div id="map" style="height:600px"></div>
+
+    <footer>
+      Data from <a href="https://www.inaturalist.org/" target="_blank" rel="noopener">iNaturalist</a>. The map shows observations annotated as "Flowers" within the selected date range.
+    </footer>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
